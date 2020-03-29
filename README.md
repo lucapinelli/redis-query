@@ -49,7 +49,7 @@ Assuming that Redis is installed on localhost, is using the port 77 and that it 
 **Database 0**
 
 Key | Value
------------
+--- | -----
 aThing | Derby Rambla
 person_12 | luca
 person_23 | anna
@@ -58,7 +58,7 @@ something | a value
 **Database 1**
 
 Key | Value
------------
+--- | -----
 something_else | another value
 Bookmarks_97 | https://github.com/lucapinelli/redis-query
 Bookmarks_163 | https://redis.io/commands#generic 
