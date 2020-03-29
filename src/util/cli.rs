@@ -30,9 +30,9 @@ pub struct Cli {
     // #[structopt(long = "pattern-mode", short = "m", default_value = "standard")]
     // pattern_mode: String,
     //
-    // /// Select the databese to query
-    // #[structopt(long = "db", short = "d", default_value = "all")]
-    // db: String,
+    /// Select the databese to query
+    #[structopt(long = "db", short = "d", default_value = "-1")]
+    pub db: i64,
 
     /*
      * Required Parameters

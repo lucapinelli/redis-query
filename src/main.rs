@@ -9,18 +9,25 @@ use crate::util::redis::*;
 fn main() -> CliResult {
     let args = Cli::from_args();
 
-    let connection_string = format!("redis://{}:{}", &args.hostname, &args.port);
+    let connection_string = format!("redis://{}:{}", args.hostname, args.port);
 
     let client = redis::Client::open(connection_string).unwrap();
     let mut connection = client.get_connection().unwrap();
     let databases = get_databases(&mut connection);
-    (0..databases).for_each(|db| {
+
+    let mut search = |db| {
         select(&mut connection, db);
         let keys: Vec<String> = connection.keys(&args.query).unwrap();
         if !keys.is_empty() {
             println!("DB({}) {}", db, keys.join(", "));
         }
-    });
+    };
+
+    if args.db >= 0 {
+        search(args.db);
+    } else {
+        (0..databases).for_each(search);
+    }
 
     Ok(())
 }
