@@ -1,7 +1,8 @@
 use quicli::prelude::*;
 use structopt::StructOpt;
 
-/// Searches keys in multiple Redis databases
+///
+/// Searches keys in multiple Redis' databases
 #[derive(Debug, StructOpt)]
 pub struct Cli {
     /*
@@ -31,13 +32,14 @@ pub struct Cli {
     #[structopt(long = "port", short = "p", default_value = "6379")]
     pub port: u32,
 
-    /// Select the databese to query
+    /// Select the database to query.
+    /// If no database is specified the tool will search in all the available databases.
     #[structopt(long = "db", short = "d", default_value = "-1")]
     pub db: i64,
 
     /*
      * Required Parameters
      */
-    /// The keys' query
+    /// The pattern to use to search the keys
     pub query: String,
 }
