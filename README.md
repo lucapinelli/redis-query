@@ -101,3 +101,14 @@ To search the keys that contains "bookmark" (case insensitive):
 $ redis-query -e "bookmark"
 DB(1) Bookmarks_97, Bookmarks_163, bookmarks_count
 ```
+
+# Install
+
+## Using Cargo
+
+Clone this project, enter the root folder and run:
+
+```bash
+cargo build --release
+cargo install --path .
+```
