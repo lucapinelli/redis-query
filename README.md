@@ -44,7 +44,7 @@ ARGS:
 
 # Examples
 
-Assuming that Redis is installed on localhost, is using the port 77 and that it contains 2 databases with the following content:
+Assuming that Redis contains 2 databases with the following content:
 
 **Database 0**
 
