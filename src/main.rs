@@ -19,7 +19,13 @@ fn main() -> CliResult {
         select(&mut connection, db);
         let keys: Vec<String> = connection.keys(&args.query).unwrap();
         if !keys.is_empty() {
-            println!("DB({}) {}", db, keys.join(", "));
+            if args.show_value {
+                println!("# DB {}", db);
+                keys.iter()
+                    .for_each(|key| println!("{} = {}", key, get(&mut connection, key)));
+            } else {
+                println!("DB({}) {}", db, keys.join(", "));
+            }
         }
     };
 

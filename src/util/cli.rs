@@ -11,9 +11,9 @@ pub struct Cli {
     #[structopt(flatten)]
     pub verbosity: Verbosity,
 
-    // /// Shows the values associated with the keys
-    // #[structopt(long = "show-value", short = "l")]
-    // show_value: bool,
+    /// Shows the values associated with the keys
+    #[structopt(long = "show-value", short = "l")]
+    pub show_value: bool,
 
     /*
      * Options
