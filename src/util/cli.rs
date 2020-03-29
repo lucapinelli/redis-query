@@ -15,6 +15,11 @@ pub struct Cli {
     #[structopt(long = "show-value", short = "l")]
     pub show_value: bool,
 
+    /// When the "easy search" is enabled the query will match all the keys that includes
+    /// the give string (case-insensitive).
+    #[structopt(long = "easy-search", short = "e")]
+    pub easy_search: bool,
+
     /*
      * Options
      */
@@ -26,10 +31,6 @@ pub struct Cli {
     #[structopt(long = "port", short = "p", default_value = "6379")]
     pub port: u32,
 
-    // /// Pattern mode
-    // #[structopt(long = "pattern-mode", short = "m", default_value = "standard")]
-    // pattern_mode: String,
-    //
     /// Select the databese to query
     #[structopt(long = "db", short = "d", default_value = "-1")]
     pub db: i64,

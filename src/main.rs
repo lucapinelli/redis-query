@@ -15,14 +15,26 @@ fn main() -> CliResult {
     let mut connection = client.get_connection().unwrap();
     let databases = get_databases(&mut connection);
 
+    let query = if args.easy_search {
+        format!(
+            "*{}*",
+            args.query
+                .chars()
+                .map(|c| format!("[{}{}]", c, c.to_uppercase()))
+                .collect::<String>()
+        )
+    } else {
+        args.query.clone()
+    };
+
     let mut search = |db| {
         select(&mut connection, db);
-        let keys: Vec<String> = connection.keys(&args.query).unwrap();
+
+        let keys: Vec<String> = connection.keys(&query).unwrap();
         if !keys.is_empty() {
             if args.show_value {
-                println!("# DB {}", db);
                 keys.iter()
-                    .for_each(|key| println!("{} = {}", key, get(&mut connection, key)));
+                    .for_each(|key| println!("DB({}) {} = {}", db, key, get(&mut connection, key)));
             } else {
                 println!("DB({}) {}", db, keys.join(", "));
             }
