@@ -9,7 +9,9 @@ use crate::util::redis::*;
 fn main() -> CliResult {
     let args = Cli::from_args();
 
-    let client = redis::Client::open("redis://localhost:6379").unwrap();
+    let connection_string = format!("redis://{}:{}", &args.hostname, &args.port);
+
+    let client = redis::Client::open(connection_string).unwrap();
     let mut connection = client.get_connection().unwrap();
     let databases = get_databases(&mut connection);
     (0..databases).for_each(|db| {
