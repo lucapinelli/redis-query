@@ -52,10 +52,7 @@ fn main() -> Result<(), ExitFailure> {
     if db >= 0 {
         search(db)?;
     } else {
-        (0..databases).try_for_each(|db| -> Result<(), ExitFailure> {
-            search(db)?;
-            Ok(())
-        })?;
+        (0..databases).try_for_each(search)?;
     }
 
     Ok(())
