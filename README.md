@@ -22,7 +22,7 @@ FLAGS:
 
     -v, --verbosity      
             Pass many times for more log output
-            
+
             By default, it'll only report errors. Passing `-v` one time also prints warnings, `-vv` enables info
             logging, `-vvv` debug, and `-vvvv` trace.
 
@@ -54,14 +54,14 @@ aThing | Derby Rambla
 person_12 | luca
 person_23 | anna
 something | a value
- 
+
 **Database 1**
 
 Key | Value
 --- | -----
 something_else | another value
 Bookmarks_97 | https://github.com/lucapinelli/redis-query
-Bookmarks_163 | https://redis.io/commands#generic 
+Bookmarks_163 | https://redis.io/commands#generic
 bookmarks_count | 2
 
 To get the keys in all the databases:
@@ -73,7 +73,7 @@ DB(1) Bookmarks_97, Bookmarks_163, something_else, bookmarks_count
 ```
 
 To search, in all the databases, the keys that matches the pattern 'something*':
- 
+
 ```bash
 $ redis-query "something*"
 DB(0) something
@@ -109,6 +109,5 @@ DB(1) Bookmarks_97, Bookmarks_163, bookmarks_count
 Clone this project, enter the root folder and run:
 
 ```bash
-cargo build --release
-cargo install --path .
+cargo install redis-query
 ```
