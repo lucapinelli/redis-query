@@ -106,8 +106,6 @@ DB(1) Bookmarks_97, Bookmarks_163, bookmarks_count
 
 ## Using Cargo
 
-Clone this project, enter the root folder and run:
-
 ```bash
 cargo install redis-query
 ```
