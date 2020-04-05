@@ -20,38 +20,42 @@ fn main() -> Result<(), ExitFailure> {
 
     let client = redis::Client::open(connection_string)?;
     let mut connection = client.get_connection()?;
-    let databases = get_databases(&mut connection);
+    let databases = get_databases(&mut connection)?;
 
     let query = if easy_search {
-        format!(
-            "*{}*",
-            query
-                .chars()
-                .map(|c| format!("[{}{}]", c, c.to_uppercase()))
-                .collect::<String>()
-        )
+        let insensitive_query = query
+            .chars()
+            .map(|c| format!("[{}{}]", c, c.to_uppercase()))
+            .collect::<String>();
+        format!("*{}*", insensitive_query)
     } else {
         query
     };
 
-    let mut search = |db| {
-        select(&mut connection, db);
+    let mut search = |db| -> Result<(), ExitFailure> {
+        select(&mut connection, db)?;
 
-        let keys: Vec<String> = connection.keys(&query).unwrap();
+        let keys: Vec<String> = connection.keys(&query)?;
         if !keys.is_empty() {
             if show_value {
-                keys.iter()
-                    .for_each(|key| println!("DB({}) {} = {}", db, key, get(&mut connection, key)));
+                keys.iter().try_for_each(|key| -> Result<(), ExitFailure> {
+                    println!("DB({}) {} = {}", db, key, get(&mut connection, key)?);
+                    Ok(())
+                })?;
             } else {
                 println!("DB({}) {}", db, keys.join(", "));
             }
         }
+        Ok(())
     };
 
     if db >= 0 {
-        search(db);
+        search(db)?;
     } else {
-        (0..databases).for_each(search);
+        (0..databases).try_for_each(|db| -> Result<(), ExitFailure> {
+            search(db)?;
+            Ok(())
+        })?;
     }
 
     Ok(())
