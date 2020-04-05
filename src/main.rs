@@ -31,7 +31,7 @@ fn main() -> Result<(), ExitFailure> {
                 .collect::<String>()
         )
     } else {
-        query.clone()
+        query
     };
 
     let mut search = |db| {
