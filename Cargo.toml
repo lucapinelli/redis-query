@@ -2,7 +2,13 @@
 name = "redis-query"
 version = "0.1.0"
 authors = ["Luca Pinelli <pinelli.luca@gmail.com>"]
+license = "MIT OR Apache-2.0"
 edition = "2018"
+readme = "README.md"
+homepage = "https://github.com/lucapinelli/redis-query"
+repository = "https://github.com/lucapinelli/redis-query"
+keywords = ["cli", "redis"]
+categories = ["command-line-utilities"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
