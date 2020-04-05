@@ -1,4 +1,4 @@
-use quicli::prelude::*;
+use exitfailure::ExitFailure;
 use redis::Commands;
 use structopt::StructOpt;
 
@@ -6,25 +6,32 @@ mod util;
 use crate::util::cli::Cli;
 use crate::util::redis::*;
 
-fn main() -> CliResult {
-    let args = Cli::from_args();
+fn main() -> Result<(), ExitFailure> {
+    let Cli {
+        hostname,
+        port,
+        easy_search,
+        query,
+        show_value,
+        db,
+    } = Cli::from_args();
 
-    let connection_string = format!("redis://{}:{}", args.hostname, args.port);
+    let connection_string = format!("redis://{}:{}", hostname, port);
 
-    let client = redis::Client::open(connection_string).unwrap();
-    let mut connection = client.get_connection().unwrap();
+    let client = redis::Client::open(connection_string)?;
+    let mut connection = client.get_connection()?;
     let databases = get_databases(&mut connection);
 
-    let query = if args.easy_search {
+    let query = if easy_search {
         format!(
             "*{}*",
-            args.query
+            query
                 .chars()
                 .map(|c| format!("[{}{}]", c, c.to_uppercase()))
                 .collect::<String>()
         )
     } else {
-        args.query.clone()
+        query.clone()
     };
 
     let mut search = |db| {
@@ -32,7 +39,7 @@ fn main() -> CliResult {
 
         let keys: Vec<String> = connection.keys(&query).unwrap();
         if !keys.is_empty() {
-            if args.show_value {
+            if show_value {
                 keys.iter()
                     .for_each(|key| println!("DB({}) {} = {}", db, key, get(&mut connection, key)));
             } else {
@@ -41,8 +48,8 @@ fn main() -> CliResult {
         }
     };
 
-    if args.db >= 0 {
-        search(args.db);
+    if db >= 0 {
+        search(db);
     } else {
         (0..databases).for_each(search);
     }

@@ -1,17 +1,11 @@
-use quicli::prelude::*;
 use structopt::StructOpt;
 
-///
 /// Searches keys in multiple Redis' databases
-#[derive(Debug, StructOpt)]
+#[derive(StructOpt)]
 pub struct Cli {
     /*
      * Flags
      */
-    // Quick and easy logging setup you get for free with quicli
-    #[structopt(flatten)]
-    pub verbosity: Verbosity,
-
     /// Shows the values associated with the keys
     #[structopt(long = "show-value", short = "l")]
     pub show_value: bool,
