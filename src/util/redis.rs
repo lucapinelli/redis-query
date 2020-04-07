@@ -1,6 +1,10 @@
 use redis::{Connection, RedisError};
 use std::collections::HashMap;
 
+pub fn ttl(connection: &mut Connection, key: &str) -> Result<i64, RedisError> {
+    redis::cmd("ttl").arg(key).query(connection)
+}
+
 pub fn get(connection: &mut Connection, key: &str) -> Result<String, RedisError> {
     redis::cmd("get").arg(key).query(connection)
 }

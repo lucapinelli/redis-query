@@ -7,8 +7,12 @@ pub struct Cli {
      * Flags
      */
     /// Shows the values associated with the keys
-    #[structopt(long = "show-value", short = "l")]
+    #[structopt(long = "show-value", short = "v")]
     pub show_value: bool,
+
+    /// Shows the values associated with the keys
+    #[structopt(long = "show-ttl", short = "t")]
+    pub show_ttl: bool,
 
     /// When the "easy search" is enabled the query will match all the keys that includes
     /// the give string (case-insensitive).

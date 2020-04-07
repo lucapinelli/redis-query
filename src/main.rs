@@ -13,6 +13,7 @@ fn main() -> Result<(), ExitFailure> {
         port,
         easy_search,
         query,
+        show_ttl,
         show_value,
         db,
     } = Cli::from_args();
@@ -43,11 +44,27 @@ fn main() -> Result<(), ExitFailure> {
 
         let keys: Vec<String> = connection.keys(&query)?;
         if !keys.is_empty() {
-            if show_value {
+            if show_value || show_ttl {
                 keys.iter().try_for_each(|key| -> Result<(), ExitFailure> {
-                    let value = get(&mut connection, key)
-                        .with_context(|_| format!("accessing the key `{}`", key))?;
-                    println!("DB({}) {} = {}", db, key, value);
+                    let value = if show_value {
+                        format!(
+                            "= {}",
+                            get(&mut connection, key)
+                                .with_context(|_| format!("accessing the key `{}`", key))?
+                        )
+                    } else {
+                        String::new()
+                    };
+                    let ttl = if show_ttl {
+                        format!(
+                            "[ttl {}]",
+                            ttl(&mut connection, key)
+                                .with_context(|_| format!("accessing the key `{}`", key))?
+                        )
+                    } else {
+                        String::new()
+                    };
+                    println!("DB({}) {} {} {}", db, key, ttl, value);
                     Ok(())
                 })?;
             } else {
