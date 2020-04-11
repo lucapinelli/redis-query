@@ -1,45 +1,28 @@
 
 
 ```
+redis-query 0.1.3
 Searches keys in multiple Redis' databases
 
 USAGE:
     redis-query [FLAGS] [OPTIONS] <query>
 
 FLAGS:
-    -e, --easy-search    
-            When the "easy search" is enabled the query will match all the keys that includes the give string (case-
-            insensitive).
-
-        --help           
-            Prints help information
-
-    -l, --show-value     
-            Shows the values associated with the keys
-
-    -V, --version        
-            Prints version information
-
-    -v, --verbosity      
-            Pass many times for more log output
-
-            By default, it'll only report errors. Passing `-v` one time also prints warnings, `-vv` enables info
-            logging, `-vvv` debug, and `-vvvv` trace.
+    -e, --easy-search    When the "easy search" is enabled the query will match all the keys that includes the give
+                         string (case-insensitive)
+        --help           Prints help information
+    -t, --show-ttl       Shows the values associated with the keys
+    -v, --show-value     Shows the values associated with the keys
+    -V, --version        Prints version information
 
 OPTIONS:
-    -d, --db <db>                
-            Select the database to query. If no database is specified the tool will search in all the available
-            databases. [default: -1]
-
-    -h, --hostname <hostname>    
-            Server hostname [default: 127.0.0.1]
-
-    -p, --port <port>            
-            Server port [default: 6379]
+    -d, --db <db>                Select the database to query. If no database is specified the tool will search in all
+                                 the available databases [default: -1]
+    -h, --hostname <hostname>    Server hostname [default: 127.0.0.1]
+    -p, --port <port>            Server port [default: 6379]
 
 ARGS:
-    <query>    
-            The pattern to use to search the keys
+    <query>    The pattern to use to search the keys
 ```
 
 # Examples
