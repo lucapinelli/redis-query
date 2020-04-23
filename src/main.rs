@@ -32,7 +32,13 @@ fn main() -> Result<(), ExitFailure> {
     let query = if easy_search {
         let insensitive_query = query
             .chars()
-            .map(|c| format!("[{}{}]", c, c.to_uppercase()))
+            .map(|c| {
+                if c.is_ascii_alphabetic() {
+                    format!("[{}{}]", c.to_lowercase(), c.to_uppercase())
+                } else {
+                    c.to_string()
+                }
+            })
             .collect::<String>();
         format!("*{}*", insensitive_query)
     } else {
