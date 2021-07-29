@@ -267,7 +267,7 @@ dependencies = [
 
 [[package]]
 name = "redis-query"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "exitfailure",
  "failure",
