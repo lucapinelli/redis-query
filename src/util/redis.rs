@@ -9,6 +9,10 @@ pub fn get(connection: &mut Connection, key: &str) -> Result<String, RedisError>
     redis::cmd("get").arg(key).query(connection)
 }
 
+pub fn hgetall(connection: &mut Connection, key: &str) -> Result<HashMap<String, i32>, RedisError> {
+    redis::cmd("hgetall").arg(key).query(connection)
+}
+
 pub fn get_databases(connection: &mut Connection) -> Result<i64, RedisError> {
     let config: HashMap<String, i64> = redis::cmd("CONFIG")
         .arg("GET")

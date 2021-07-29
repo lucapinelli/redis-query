@@ -16,5 +16,5 @@ categories = ["command-line-utilities"]
 [dependencies]
 exitfailure = "0.5.1"
 failure = "0.1.7"
-redis = "0.15.1"
+redis = "0.21.0"
 structopt = "0.3.12"

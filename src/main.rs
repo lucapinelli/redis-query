@@ -53,11 +53,19 @@ fn main() -> Result<(), ExitFailure> {
             if show_value || show_ttl {
                 keys.iter().try_for_each(|key| -> Result<(), ExitFailure> {
                     let value = if show_value {
-                        format!(
-                            "= {}",
-                            get(&mut connection, key)
-                                .with_context(|_| format!("accessing the key `{}`", key))?
-                        )
+                        match get(&mut connection, key) {
+                            // Err(err) => format!(":: `{}`", err),
+                            Err(get_error) => match hgetall(&mut connection, key) {
+                                Err(hgetall_error) => {
+                                    format!(
+                                        "get and hgetall has failed :: ({}) ({})",
+                                        get_error, hgetall_error
+                                    )
+                                }
+                                Ok(hgetall_value) => format!("= {:?}", hgetall_value),
+                            },
+                            Ok(get_value) => format!("= {}", get_value),
+                        }
                     } else {
                         String::new()
                     };
@@ -70,7 +78,7 @@ fn main() -> Result<(), ExitFailure> {
                     } else {
                         String::new()
                     };
-                    println!("DB({}) {} {} {}", db, key, ttl, value);
+                    println!("DB({}) {} {} {}", db, key, value, ttl);
                     Ok(())
                 })?;
             } else {
