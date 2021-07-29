@@ -69,7 +69,21 @@ fn main() -> Result<(), ExitFailure> {
                                     key, value_type
                                 ))?
                             ),
-                            _ => format!("type {} not supported.", value_type),
+                            "set" => format!(
+                                "= {:?}",
+                                smembers(&mut connection, key).with_context(|_| format!(
+                                    "using hgetall on the key `{}` ({})",
+                                    key, value_type
+                                ))?
+                            ),
+                            "list" => format!(
+                                "= {:?}",
+                                lrange(&mut connection, key, 0, -1).with_context(|_| format!(
+                                    "using lrange on the key `{}` ({})",
+                                    key, value_type
+                                ))?
+                            ),
+                            _ => format!(":: type `{}` not supported.", value_type),
                         }
                     } else {
                         String::new()

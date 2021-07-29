@@ -66,7 +66,7 @@ DB(1) something_else
 To show the values associated with the keys:
 
 ```bash
-$ redis-query -l "something*"
+$ redis-query -v "something*"
 DB(0) something = a value
 DB(1) something_else = another value
 ```
@@ -74,7 +74,7 @@ DB(1) something_else = another value
 To search the keys only in the database 1:
 
 ```bash
-$ redis-query -d 1 "something*"
+$ redis-query --db 1 "something*"
 DB(1) something_else
 ```
 

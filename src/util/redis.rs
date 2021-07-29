@@ -17,6 +17,23 @@ pub fn hgetall(connection: &mut Connection, key: &str) -> Result<HashMap<String,
     redis::cmd("hgetall").arg(key).query(connection)
 }
 
+pub fn smembers(connection: &mut Connection, key: &str) -> Result<Vec<String>, RedisError> {
+    redis::cmd("smembers").arg(key).query(connection)
+}
+
+pub fn lrange(
+    connection: &mut Connection,
+    key: &str,
+    start: i64,
+    stop: i64,
+) -> Result<Vec<String>, RedisError> {
+    redis::cmd("lrange")
+        .arg(key)
+        .arg(start)
+        .arg(stop)
+        .query(connection)
+}
+
 pub fn get_databases(connection: &mut Connection) -> Result<i64, RedisError> {
     let config: HashMap<String, i64> = redis::cmd("CONFIG")
         .arg("GET")
