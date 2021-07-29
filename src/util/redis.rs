@@ -9,18 +9,12 @@ pub fn get_type(connection: &mut Connection, key: &str) -> Result<String, RedisE
     redis::cmd("type").arg(key).query(connection)
 }
 
+// string
 pub fn get(connection: &mut Connection, key: &str) -> Result<String, RedisError> {
     redis::cmd("get").arg(key).query(connection)
 }
 
-pub fn hgetall(connection: &mut Connection, key: &str) -> Result<HashMap<String, i32>, RedisError> {
-    redis::cmd("hgetall").arg(key).query(connection)
-}
-
-pub fn smembers(connection: &mut Connection, key: &str) -> Result<Vec<String>, RedisError> {
-    redis::cmd("smembers").arg(key).query(connection)
-}
-
+// list
 pub fn lrange(
     connection: &mut Connection,
     key: &str,
@@ -32,6 +26,30 @@ pub fn lrange(
         .arg(start)
         .arg(stop)
         .query(connection)
+}
+
+// set
+pub fn smembers(connection: &mut Connection, key: &str) -> Result<Vec<String>, RedisError> {
+    redis::cmd("smembers").arg(key).query(connection)
+}
+
+// zset (sorted set)
+pub fn zrange(
+    connection: &mut Connection,
+    key: &str,
+    start: i64,
+    stop: i64,
+) -> Result<Vec<String>, RedisError> {
+    redis::cmd("zrange")
+        .arg(key)
+        .arg(start)
+        .arg(stop)
+        .query(connection)
+}
+
+// hash
+pub fn hgetall(connection: &mut Connection, key: &str) -> Result<HashMap<String, i32>, RedisError> {
+    redis::cmd("hgetall").arg(key).query(connection)
 }
 
 pub fn get_databases(connection: &mut Connection) -> Result<i64, RedisError> {

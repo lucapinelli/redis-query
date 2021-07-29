@@ -62,24 +62,31 @@ fn main() -> Result<(), ExitFailure> {
                                     key, value_type
                                 ))?
                             ),
-                            "hash" => format!(
+                            "list" => format!(
                                 "= {:?}",
-                                hgetall(&mut connection, key).with_context(|_| format!(
-                                    "using hgetall on the key `{}` ({})",
+                                lrange(&mut connection, key, 0, -1).with_context(|_| format!(
+                                    "using lrange on the key `{}` ({})",
                                     key, value_type
                                 ))?
                             ),
                             "set" => format!(
                                 "= {:?}",
                                 smembers(&mut connection, key).with_context(|_| format!(
-                                    "using hgetall on the key `{}` ({})",
+                                    "using smembers on the key `{}` ({})",
                                     key, value_type
                                 ))?
                             ),
-                            "list" => format!(
+                            "zset" => format!(
                                 "= {:?}",
-                                lrange(&mut connection, key, 0, -1).with_context(|_| format!(
-                                    "using lrange on the key `{}` ({})",
+                                zrange(&mut connection, key, 0, -1).with_context(|_| format!(
+                                    "using zrange on the key `{}` ({})",
+                                    key, value_type
+                                ))?
+                            ),
+                            "hash" => format!(
+                                "= {:?}",
+                                hgetall(&mut connection, key).with_context(|_| format!(
+                                    "using hgetall on the key `{}` ({})",
                                     key, value_type
                                 ))?
                             ),
