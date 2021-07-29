@@ -53,18 +53,23 @@ fn main() -> Result<(), ExitFailure> {
             if show_value || show_ttl {
                 keys.iter().try_for_each(|key| -> Result<(), ExitFailure> {
                     let value = if show_value {
-                        match get(&mut connection, key) {
-                            // Err(err) => format!(":: `{}`", err),
-                            Err(get_error) => match hgetall(&mut connection, key) {
-                                Err(hgetall_error) => {
-                                    format!(
-                                        "get and hgetall has failed :: ({}) ({})",
-                                        get_error, hgetall_error
-                                    )
-                                }
-                                Ok(hgetall_value) => format!("= {:?}", hgetall_value),
-                            },
-                            Ok(get_value) => format!("= {}", get_value),
+                        let value_type = get_type(&mut connection, key)?;
+                        match value_type.as_str() {
+                            "string" => format!(
+                                "= {}",
+                                get(&mut connection, key).with_context(|_| format!(
+                                    "using get on the key `{}` ({})",
+                                    key, value_type
+                                ))?
+                            ),
+                            "hash" => format!(
+                                "= {:?}",
+                                hgetall(&mut connection, key).with_context(|_| format!(
+                                    "using hgetall on the key `{}` ({})",
+                                    key, value_type
+                                ))?
+                            ),
+                            _ => format!("type {} not supported.", value_type),
                         }
                     } else {
                         String::new()
