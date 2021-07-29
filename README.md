@@ -1,7 +1,7 @@
 
 
 ```
-redis-query 0.1.7
+redis-query 0.1.8
 Searches keys in multiple Redis' databases
 
 USAGE:
