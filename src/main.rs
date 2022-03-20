@@ -1,7 +1,7 @@
+use clap::Parser;
 use exitfailure::ExitFailure;
 use failure::ResultExt;
 use redis::{Commands, Connection};
-use structopt::StructOpt;
 
 mod util;
 use crate::util::cli::Cli;
@@ -52,7 +52,7 @@ fn main() -> Result<(), ExitFailure> {
         show_ttl,
         show_value,
         db,
-    } = Cli::from_args();
+    } = Cli::parse();
 
     let connection_string = format!("redis://{}:{}", hostname, port);
 
