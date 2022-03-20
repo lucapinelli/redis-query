@@ -1,6 +1,6 @@
 use structopt::StructOpt;
 
-/// Searches keys in multiple Redis' databases
+/// Dev tool to search keys in a Redis cache.
 #[derive(StructOpt)]
 pub struct Cli {
     /*
@@ -14,8 +14,7 @@ pub struct Cli {
     #[structopt(long = "show-ttl", short = "t")]
     pub show_ttl: bool,
 
-    /// When the "easy search" is enabled the query will match all the keys that includes
-    /// the give string (case-insensitive).
+    /// When enabled returns all the keys that contains the query (case-insensitive)
     #[structopt(long = "easy-search", short = "e")]
     pub easy_search: bool,
 

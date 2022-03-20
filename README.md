@@ -1,15 +1,14 @@
 
 
 ```
-redis-query 0.1.8
-Searches keys in multiple Redis' databases
+redis-query 0.1.9
+Dev tool to search keys in a Redis cache.
 
 USAGE:
     redis-query [FLAGS] [OPTIONS] <query>
 
 FLAGS:
-    -e, --easy-search    When the "easy search" is enabled the query will match all the keys that includes the give
-                         string (case-insensitive)
+    -e, --easy-search    When the "easy search" is enabled the query will match all the keys that includes the given string (case-insensitive)
         --help           Prints help information
     -t, --show-ttl       Shows the values associated with the keys
     -v, --show-value     Shows the values associated with the keys
@@ -22,7 +21,7 @@ OPTIONS:
     -p, --port <port>            Server port [default: 6379]
 
 ARGS:
-    <query>    The pattern to use to search the keys
+    <query>    The pattern used to filter the keys as defined in the Redis doc (https://redis.io/commands/keys)
 ```
 
 # Examples
@@ -82,6 +81,9 @@ To search the keys that contains "bookmark" (case insensitive):
 
 ```bash
 $ redis-query -e "bookmark"
+DB(1) Bookmarks_97, Bookmarks_163, bookmarks_count
+# this is the same of using:
+$ redis-query "*[Bb][Oo][Oo][Kk][Mm][Aa][Rr][Kk]*"
 DB(1) Bookmarks_97, Bookmarks_163, bookmarks_count
 ```
 
