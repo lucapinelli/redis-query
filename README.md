@@ -63,7 +63,7 @@ DB(1) something_else
 To show the values associated with the keys:
 
 ```bash
-$ redis-query -v "something*"
+$ redis-query --show-value "something*"
 DB(0) something = a value
 DB(1) something_else = another value
 ```
@@ -71,14 +71,14 @@ DB(1) something_else = another value
 To search the keys only in the database 1:
 
 ```bash
-$ redis-query -d 1 "something*"
+$ redis-query --db 1 "something*"
 DB(1) something_else
 ```
 
 To search the keys that contains "bookmark" (case insensitive):
 
 ```bash
-$ redis-query -c "bookmark"
+$ redis-query --contains "bookmark"
 DB(1) Bookmarks_97, Bookmarks_163, bookmarks_count
 # this is the same of using:
 $ redis-query "*[Bb][Oo][Oo][Kk][Mm][Aa][Rr][Kk]*"
