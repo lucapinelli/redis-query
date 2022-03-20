@@ -1,27 +1,25 @@
 
 
 ```
-redis-query 0.1.9
-Dev tool to search keys in a Redis cache.
+A tool to search keys in multiple Redis' databases
 
 USAGE:
-    redis-query [FLAGS] [OPTIONS] <query>
-
-FLAGS:
-    -e, --easy-search    When the "easy search" is enabled the query will match all the keys that includes the given string (case-insensitive)
-        --help           Prints help information
-    -t, --show-ttl       Shows the values associated with the keys
-    -v, --show-value     Shows the values associated with the keys
-    -V, --version        Prints version information
-
-OPTIONS:
-    -d, --db <db>                Select the database to query. If no database is specified the tool will search in all
-                                 the available databases [default: -1]
-    -h, --hostname <hostname>    Server hostname [default: 127.0.0.1]
-    -p, --port <port>            Server port [default: 6379]
+    redis-query [OPTIONS] <QUERY>
 
 ARGS:
-    <query>    The pattern used to filter the keys as defined in the Redis doc (https://redis.io/commands/keys)
+    <QUERY>    The pattern used to filter the keys as defined in the Redis doc
+               (https://redis.io/commands/keys)
+
+OPTIONS:
+    -c, --contains               Match the keys using contains (case-insensitive)
+    -d, --db <DB>                Select the database to query. If no database is specified the tool
+                                 will search in all the available databases [default: -1]
+    -h, --hostname <HOSTNAME>    Server hostname [default: 127.0.0.1]
+        --help                   Print help information
+    -p, --port <PORT>            Server port [default: 6379]
+    -t, --show-ttl               Shows the TTL associated with the keys
+    -v, --show-value             Shows the values associated with the keys
+    -V, --version                Print version information
 ```
 
 # Examples
@@ -73,14 +71,14 @@ DB(1) something_else = another value
 To search the keys only in the database 1:
 
 ```bash
-$ redis-query --db 1 "something*"
+$ redis-query -d 1 "something*"
 DB(1) something_else
 ```
 
 To search the keys that contains "bookmark" (case insensitive):
 
 ```bash
-$ redis-query -e "bookmark"
+$ redis-query -c "bookmark"
 DB(1) Bookmarks_97, Bookmarks_163, bookmarks_count
 # this is the same of using:
 $ redis-query "*[Bb][Oo][Oo][Kk][Mm][Aa][Rr][Kk]*"

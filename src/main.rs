@@ -47,7 +47,7 @@ fn main() -> Result<(), ExitFailure> {
     let Cli {
         hostname,
         port,
-        easy_search,
+        use_contains,
         query,
         show_ttl,
         show_value,
@@ -65,7 +65,7 @@ fn main() -> Result<(), ExitFailure> {
     let databases =
         get_databases(&mut connection).with_context(|_| "getting the number of databases")?;
 
-    let query = if easy_search {
+    let query = if use_contains {
         let insensitive_query = query
             .chars()
             .map(|c| {

@@ -8,36 +8,36 @@ pub struct Cli {
      * Flags
      */
     /// Shows the values associated with the keys
-    #[clap(long = "show-value", short = 'v')]
+    #[clap(short = 'v', long)]
     pub show_value: bool,
 
-    /// Shows the values associated with the keys
-    #[clap(long = "show-ttl", short = 't')]
+    /// Shows the TTL associated with the keys
+    #[clap(short = 't', long)]
     pub show_ttl: bool,
 
-    /// When enabled returns all the keys that contains the query (case-insensitive)
-    #[clap(long = "easy-search", short = 'e')]
-    pub easy_search: bool,
+    /// Match the keys using contains (case-insensitive)
+    #[clap(short = 'c', long = "contains")]
+    pub use_contains: bool,
 
     /*
      * Options
      */
     /// Server hostname
-    #[clap(long = "hostname", short = 'h', default_value = "127.0.0.1")]
+    #[clap(short, long, default_value = "127.0.0.1")]
     pub hostname: String,
 
     /// Server port
-    #[clap(long = "port", short = 'p', default_value = "6379")]
+    #[clap(short, long, default_value = "6379")]
     pub port: u32,
 
     /// Select the database to query.
     /// If no database is specified the tool will search in all the available databases.
-    #[clap(long = "db", short = 'd', default_value = "-1")]
+    #[clap(short, long, default_value = "-1")]
     pub db: i64,
 
     /*
      * Required Parameters
      */
-    /// The pattern to use to search the keys
+    /// The pattern used to filter the keys as defined in the Redis doc (https://redis.io/commands/keys)
     pub query: String,
 }
