@@ -1,6 +1,6 @@
 [package]
 name = "redis-query"
-version = "0.1.9"
+version = "0.1.10"
 authors = ["Luca Pinelli <pinelli.luca@gmail.com>"]
 license = "MIT OR Apache-2.0"
 edition = "2018"
@@ -14,7 +14,8 @@ categories = ["command-line-utilities"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+clap = { version = "3.2.22", features = ["derive"] }
+colored = "2.0.0"
 exitfailure = "0.5.1"
-failure = "0.1.7"
-redis = "0.21.5"
-clap = { version = "3.1.6", features = ["derive"] }
+failure = "0.1.8"
+redis = "0.21.6"

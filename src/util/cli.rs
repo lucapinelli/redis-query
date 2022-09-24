@@ -19,6 +19,10 @@ pub struct Cli {
     #[clap(short = 'c', long = "contains")]
     pub use_contains: bool,
 
+    /// Colorizes the output
+    #[clap(long = "color")]
+    pub use_color: bool,
+
     /*
      * Options
      */

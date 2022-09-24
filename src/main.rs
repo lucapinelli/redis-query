@@ -1,53 +1,19 @@
 use clap::Parser;
+use colored::Colorize;
 use exitfailure::ExitFailure;
 use failure::ResultExt;
-use redis::{Commands, Connection};
+use redis::Commands;
 
 mod util;
 use crate::util::cli::Cli;
 use crate::util::redis::*;
-
-fn format_value(connection: &mut Connection, key: &str) -> Result<String, ExitFailure> {
-    let value_type = get_type(connection, key)?;
-    let value = match value_type.as_str() {
-        "string" => format!(
-            "= {}",
-            get(connection, key)
-                .with_context(|_| format!("using get on the key `{}` ({})", key, value_type))?
-        ),
-        "list" => format!(
-            "= {:?}",
-            lrange(connection, key, 0, -1)
-                .with_context(|_| format!("using lrange on the key `{}` ({})", key, value_type))?
-        ),
-        "set" => format!(
-            "= {:?}",
-            smembers(connection, key).with_context(|_| format!(
-                "using smembers on the key `{}` ({})",
-                key, value_type
-            ))?
-        ),
-        "zset" => format!(
-            "= {:?}",
-            zrange(connection, key, 0, -1)
-                .with_context(|_| format!("using zrange on the key `{}` ({})", key, value_type))?
-        ),
-        "hash" => format!(
-            "= {:?}",
-            hgetall(connection, key)
-                .with_context(|_| format!("using hgetall on the key `{}` ({})", key, value_type))?
-        ),
-        _ => format!(":: type `{}` not supported.", value_type),
-    };
-
-    Ok(value)
-}
 
 fn main() -> Result<(), ExitFailure> {
     let Cli {
         hostname,
         port,
         use_contains,
+        use_color,
         query,
         show_ttl,
         show_value,
@@ -88,26 +54,48 @@ fn main() -> Result<(), ExitFailure> {
         if !keys.is_empty() {
             if show_value || show_ttl {
                 keys.iter().try_for_each(|key| -> Result<(), ExitFailure> {
+                    let value_prefix = if show_value { "=" } else { "" };
+
                     let value = if show_value {
-                        match format_value(&mut connection, key) {
-                            Err(e) => format!(" :: an error occured {:?}", e),
-                            Ok(v) => v,
-                        }
+                        format_value(&mut connection, key).with_context(|_| {
+                            format!("formatting the value of the key `{}`", key)
+                        })?
                     } else {
                         String::new()
                     };
+
                     let ttl = if show_ttl {
                         format!(
                             "[ttl {}]",
-                            ttl(&mut connection, key)
-                                .with_context(|_| format!("accessing the key `{}`", key))?
+                            ttl(&mut connection, key).with_context(|_| format!(
+                                "accessing the TTL of the key `{}`",
+                                key
+                            ))?
                         )
                     } else {
                         String::new()
                     };
-                    println!("DB({}) {} {} {}", db, key, value, ttl);
+
+                    if use_color {
+                        println!(
+                            "{} {} {} {} {}",
+                            format!("DB({})", db).blue(),
+                            key.green(),
+                            value_prefix,
+                            value.cyan(),
+                            ttl.yellow()
+                        );
+                    } else {
+                        println!("DB({}) {} {} {} {}", db, key, value_prefix, value, ttl);
+                    }
                     Ok(())
                 })?;
+            } else if use_color {
+                println!(
+                    "{} {}",
+                    format!("DB({})", db).blue(),
+                    keys.join(", ").green()
+                );
             } else {
                 println!("DB({}) {}", db, keys.join(", "));
             }

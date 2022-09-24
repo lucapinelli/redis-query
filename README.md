@@ -12,6 +12,7 @@ ARGS:
 
 OPTIONS:
     -c, --contains               Match the keys using contains (case-insensitive)
+        --color                  Colorizes the output
     -d, --db <DB>                Select the database to query. If no database is specified the tool
                                  will search in all the available databases [default: -1]
     -h, --hostname <HOSTNAME>    Server hostname [default: 127.0.0.1]
@@ -46,7 +47,7 @@ bookmarks_count | 2
 
 To get the keys in all the databases:
 
-```
+```bash
 $ redis-query "*"
 DB(0) aThing, person_12, person_23, something
 DB(1) Bookmarks_97, Bookmarks_163, something_else, bookmarks_count
