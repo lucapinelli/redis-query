@@ -68,11 +68,10 @@ pub fn select(connection: &mut Connection, db: i64) -> Result<String, RedisError
 pub fn format_value(connection: &mut Connection, key: &str) -> Result<String, Error> {
     let value_type = get_type(connection, key)?;
     let value = match value_type.as_str() {
-        "string" => Some(format!(
-            "{}",
+        "string" => Some(
             get(connection, key)
-                .with_context(|_| format!("using get on the key `{}` ({})", key, value_type))?
-        )),
+                .with_context(|_| format!("using get on the key `{}` ({})", key, value_type))?,
+        ),
         "list" => Some(format!(
             "{:?}",
             lrange(connection, key, 0, -1)
