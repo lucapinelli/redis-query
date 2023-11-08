@@ -1,6 +1,6 @@
 [package]
 name = "redis-query"
-version = "0.1.10"
+version = "0.1.11"
 authors = ["Luca Pinelli <pinelli.luca@gmail.com>"]
 license = "MIT OR Apache-2.0"
 edition = "2018"
@@ -18,4 +18,4 @@ clap = { version = "3.2.22", features = ["derive"] }
 colored = "2.0.0"
 exitfailure = "0.5.1"
 failure = "0.1.8"
-redis = "0.21.6"
+redis = "0.23.3"
